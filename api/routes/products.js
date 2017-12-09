@@ -13,7 +13,7 @@ router.post('/', (req, res, next) => {
     price: req.body.price
   };
   res.status(201).json({
-    message: 'POST requests to /products',
+    message: 'Product was created',
     createdProduct: product
   })
 });

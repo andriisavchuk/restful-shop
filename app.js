@@ -11,6 +11,19 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// Handling CORS(Cross-Origin-Resource-Sharing) Errors
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-Width, Content-Type, Accept, Authorization"
+  );
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).json({});
+  }
+});
+
 // Use Routes
 app.use('/products', productsRoutes);
 app.use('/orders', ordersRoutes);
