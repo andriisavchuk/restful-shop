@@ -1,15 +1,25 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+// const bodyParser = require('body-parser'); is not needed to require
 
 const productsRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
 
+// Connect to MongoDB on ATLAS Cloud
+mongoose.connect('mongodb://restful-shop:' +
+  process.env.MONGO_ATLAS_PSWD +
+  '@cluster0-shard-00-00-oumiv.mongodb.net:27017,cluster0-shard-00-01-oumiv.mongodb.net:27017,cluster0-shard-00-02-oumiv.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+  {
+    useMongoClient: true
+  }
+);
+
 // Use Middleware
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
 // Handling CORS(Cross-Origin-Resource-Sharing) Errors
 app.use((req, res, next) => {
@@ -22,6 +32,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
     return res.status(200).json({});
   }
+  next();
 });
 
 // Use Routes
