@@ -22,26 +22,32 @@ router.post('/', (req, res, next) => {
     .save() // store in DB
     .then(result => {
       console.log(result);
+      res.status(201).json({
+        message: 'Product was created',
+        createdProduct: result
+      });
     })
-    .catch(err => console.log(err));
-  res.status(201).json({
-    message: 'Product was created',
-    createdProduct: product
-  });
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: err});
+    });
 });
 
 router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
-  if (id === 'special') {
-    res.status(200).json({
-      message: 'You have got the special ID',
-      id : id
-    });
-  } else {
-    res.status(200).json({
-      message: 'You passed an ID'
-    });
-  }
+  Product.findById(id)
+  .exec()
+  .then(doc => {
+    console.log('Data from MongoDB', doc);
+    if (doc) {
+      res.status(200).json(doc);
+    }
+    res.status(404).json({message: 'No valid entry found for provided ID'});
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({error: err});
+  });
 });
 
 router.patch('/:productId', (req, res, next) => {
