@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const productsRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
 
+// Use native promises
+mongoose.Promise = global.Promise;
+
 // Connect to MongoDB on ATLAS Cloud
 mongoose.connect('mongodb://restful-shop:' +
   process.env.MONGO_ATLAS_PSWD +
