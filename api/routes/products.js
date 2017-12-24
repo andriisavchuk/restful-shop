@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
             description: doc.description,
             request: {
               type: 'GET',
-              url: `http://localhost:3000/products/${doc._id}`
+              url: 'http://localhost:3000/products/' + doc._id
             }
           }
         })
@@ -63,7 +63,7 @@ router.post('/', (req, res, next) => {
           description: doc.description,
           request: {
             type: 'GET',
-            url: `http://localhost:3000/products/${result._id}`
+            url: 'http://localhost:3000/products/' + result._id
           }
         }
       });
@@ -88,7 +88,7 @@ router.get('/:productId', (req, res, next) => {
         product: doc,
         request: {
           type: 'GET',
-          url: `http://localhost:3000/products/${result._id}`
+          url: 'http://localhost:3000/products/' + doc._id
         }
       });
     } else {
@@ -116,7 +116,7 @@ router.patch('/:productId', (req, res, next) => {
         message: 'Product was updated',
         request: {
           type: 'GET',
-          url: `http://localhost:3000/products/${result._id}`
+          url: 'http://localhost:3000/products/' + result._id
         }
       });
     })
