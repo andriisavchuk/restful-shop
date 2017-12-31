@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
+const express   = require('express');
+const router    = express.Router();
+const mongoose  = require('mongoose');
 
-const Order = require('../models/order');
+const Order     = require('../models/order');
+const Product   = require('../models/product');
 
 // Orders CRUD Functionality
 router.get('/', (req, res, next) => {
@@ -28,20 +29,28 @@ router.get('/', (req, res, next) => {
     .catch(err => {
       res.status(500).json({
         error: err
-      });
     });
+  });
 });
 
 router.post('/', (req, res, next) => {
+  Product.findById(req.body.productId)
+    .then(product => {
 
-  const order = new Order ({
-    _id: mongoose.Types.ObjectId(),
-    quantity: req.body.quantity,
-    product: req.body.productId
-  });
+      if (!product) {
+        return res.status(404).json({
+          message: "Product not found"
+        });
+      }
 
-  order
-    .save()
+      const order = new Order ({
+        _id: mongoose.Types.ObjectId(),
+        quantity: req.body.quantity,
+        product: req.body.productId
+      });
+
+      return order.save();
+    })
     .then(result => {
       console.log(result);
       res.status(201).json({
@@ -61,8 +70,8 @@ router.post('/', (req, res, next) => {
       console.log(err);
       res.status(500).json({
         error: err
-      });
     });
+  });
 });
 
 router.get('/:orderId', (req, res, next) => {

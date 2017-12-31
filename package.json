@@ -4,7 +4,7 @@
   "description": "RESTful app on simple shop example",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "Andrii S",
   "license": "ISC",

@@ -1,11 +1,11 @@
-const express = require('express');
-const app = express();
-const morgan = require('morgan');
-const mongoose = require('mongoose');
+const express   = require('express');
+const app       = express();
+const morgan    = require('morgan');
+const mongoose  = require('mongoose');
 // const bodyParser = require('body-parser'); is not needed to require
 
-const productsRoutes = require('./api/routes/products');
-const ordersRoutes = require('./api/routes/orders');
+const productsRoutes  = require('./api/routes/products');
+const ordersRoutes    = require('./api/routes/orders');
 
 // Use native promises
 mongoose.Promise = global.Promise;

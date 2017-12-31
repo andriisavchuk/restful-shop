@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
+const express   = require('express');
+const router    = express.Router();
+const mongoose  = require('mongoose');
 
-const Product = require('../models/product');
+const Product   = require('../models/product');
 
 // Products CRUD Functionality
 router.get('/', (req, res, next) => {
