@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const Order = require('../models/order');
 
+// Orders CRUD Functionality
 router.get('/', (req, res, next) => {
   Order.find()
     .select('product quantity _id')
@@ -32,11 +33,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+
   const order = new Order ({
     _id: mongoose.Types.ObjectId(),
     quantity: req.body.quantity,
     product: req.body.productId
   });
+
   order
     .save()
     .then(result => {
