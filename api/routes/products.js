@@ -1,6 +1,8 @@
 const express   = require('express');
 const router    = express.Router();
 const mongoose  = require('mongoose');
+const multer    = require('multer');
+const upload    = multer({dest: 'uploads/'});
 
 const Product   = require('../models/product');
 
@@ -9,19 +11,19 @@ router.get('/', (req, res, next) => {
   Product.find()
     .select('_id name price currency description')
     .exec()
-    .then(docs => {
+    .then(products => {
       const response = {
-        count: docs.length,
-        products: docs.map(doc => {
+        count: products.length,
+        products: products.map(doc => {
           return {
-            _id: doc._id,
-            name: doc.name,
-            price: doc.price,
-            currency: doc.currency,
-            description: doc.description,
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            currency: product.currency,
+            description: product.description,
             request: {
               type: 'GET',
-              url: 'http://localhost:3000/products/' + doc._id
+              url: 'http://localhost:3000/products/' + product._id
             }
           }
         })
@@ -42,8 +44,8 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.post('/', (req, res, next) => {
-
+router.post('/', upload.single('productImage'), (req, res, next) => {
+  console.log(req.file);
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
@@ -59,11 +61,11 @@ router.post('/', (req, res, next) => {
       res.status(201).json({
         message: 'Product was created',
         createdProduct: {
-          _id: doc._id,
-          name: doc.name,
-          price: doc.price,
-          currency: doc.currency,
-          description: doc.description,
+          _id: result._id,
+          name: result.name,
+          price: result.price,
+          currency: result.currency,
+          description: result.description,
           request: {
             type: 'GET',
             url: 'http://localhost:3000/products/' + result._id
@@ -147,7 +149,7 @@ router.delete('/:productId', (req, res, next) => {
         message: 'Product was deleted',
         request: {
           type: 'POST',
-          url: `http://localhost:3000/products/`,
+          url: 'http://localhost:3000/products/',
           body: { name: 'String', price: 'Number' }
         }
       });
