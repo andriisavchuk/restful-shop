@@ -6,6 +6,7 @@ const mongoose  = require('mongoose');
 
 const productsRoutes  = require('./api/routes/products');
 const ordersRoutes    = require('./api/routes/orders');
+const userRoutes      = require('./api/routes/user');
 
 // Use native promises
 mongoose.Promise = global.Promise;
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 // Use Routes
 app.use('/products', productsRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/user', userRoutes);
 
 // Errors Handling
 app.use((req, res, next) => {
