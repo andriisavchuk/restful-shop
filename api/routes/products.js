@@ -6,7 +6,7 @@ const multer    = require('multer');
 // File storage logic
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, 'uploads');
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -22,12 +22,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload    = multer({
+const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 5,
+    fileSize: 1024 * 1024 * 5
+  },
     fileFilter: fileFilter
-  }
 });
 
 const Product   = require('../models/product');
@@ -35,7 +35,7 @@ const Product   = require('../models/product');
 // Products CRUD Functionality
 router.get('/', (req, res, next) => {
   Product.find()
-    .select('_id name price currency description')
+    .select('_id name price currency description productImage')
     .exec()
     .then(docs => {
       const response = {
@@ -47,6 +47,7 @@ router.get('/', (req, res, next) => {
             price: doc.price,
             currency: doc.currency,
             description: doc.description,
+            productImage: doc.productImage,
             request: {
               type: 'GET',
               url: 'http://localhost:3000/products/' + doc._id
@@ -77,7 +78,8 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
     name: req.body.name,
     price: req.body.price,
     currency: req.body.currency,
-    description: req.body.description
+    description: req.body.description,
+    productImage: req.file.path
   });
 
   product
@@ -112,7 +114,7 @@ router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
 
   Product.findById(id)
-  .select('_id name price currency description')
+  .select('_id name price currency description productImage')
   .exec()
   .then(doc => {
     console.log('Data from MongoDB', doc);
