@@ -51,23 +51,35 @@ router.post('/login', (req, res, next) => {
 
   User.find({ email: req.body.email })
     .exec()
-    .then(users => {
-        if (users.length < 1) {
+    .then(user => {
+        if (user.length < 1) {
           return res.status(401).json({
             message: 'Authorization failed'
           });
         }
-        bcrypt.compare(req.body.password, users[0].password, (err, result) => {
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
           if (err) {
             return res.status(401).json({
               message: 'Authorization failed. Password is incorrect'
             });
           }
           if (result) {
-            return res.status(200).json({
-              message: 'Authorization successfull.'
-            });
-          }
+            const token = jwt.sign(
+                {
+                  name: user[0].name,
+                  email: user[0].email,
+                  userId: user[0]._id
+                },
+              process.env.JWT_KEY,
+                {
+                  expiresIn: "1h"
+                }
+              );
+              return res.status(200).json({
+                message: 'Authorization successfull.',
+                token: token
+              });
+            }
           res.status(401).json({
             message: 'Authorization failed.'
         });
