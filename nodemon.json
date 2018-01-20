@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 {
   "env": {
     "MONGO_ATLAS_PSWD": "restful-shop",
     "JWT_KEY": "secret"
   }
 }
+=======
+{
+  "env": {
+    "MONGO_ATLAS_PSWD": "restful-shop",
+    "JWT_KEY": "secret"
+  }
+}
+>>>>>>> 0b24425c9266664fde98ef70a8a77ba1737e2c06
