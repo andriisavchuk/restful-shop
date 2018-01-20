@@ -1,5 +1,6 @@
 {
   "env": {
-    "MONGO_ATLAS_PSWD": "restful-shop"
+    "MONGO_ATLAS_PSWD": "restful-shop",
+    "JWT_KEY": "secret"
   }
 }
